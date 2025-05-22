@@ -115,13 +115,10 @@ result = full_pipeline.predict(some_data)
 # print(list(some_label))
 
 def evaluate_model():
-    housing_prediction = full_pipeline.predict(test_data)
+    housing_prediction = full_pipeline.predict(train_data)
     mse = mean_squared_error(test_data_label, housing_prediction)
     rmse = np.sqrt(mse)
     return rmse
-
-
-
 
 def score():
     # Use cross_val_score on full pipeline with proper scor ing parameter
