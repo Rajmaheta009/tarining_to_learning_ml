@@ -18,7 +18,7 @@ from sklearn.ensemble import RandomForestRegressor
 from lightgbm import LGBMRegressor
 
 # Load dataset
-housing_data = pd.read_csv("Housing.csv")
+housing_data = pd.read_csv("csv_database/Housing.csv")
 
 # Function to split dataset into train and test sets
 def test_train_dataset(housing):
@@ -115,13 +115,10 @@ result = full_pipeline.predict(some_data)
 # print(list(some_label))
 
 def evaluate_model():
-    housing_prediction = full_pipeline.predict(test_data)
+    housing_prediction = model.predict(train_data)
     mse = mean_squared_error(test_data_label, housing_prediction)
     rmse = np.sqrt(mse)
     return rmse
-
-
-
 
 def score():
     # Use cross_val_score on full pipeline with proper scor ing parameter

@@ -1,3 +1,4 @@
+import joblib
 import numpy as np
 import pandas as pd
 from pandas.plotting import scatter_matrix
@@ -15,7 +16,7 @@ from lightgbm import LGBMRegressor
 from sklearn.tree import DecisionTreeRegressor
 
 # Load dataset
-housing_data = pd.read_csv("Housing.csv")
+housing_data = pd.read_csv("csv_database/Housing.csv")
 
 # -------------------- Outlier Removal --------------------
 # Remove outliers from target variable 'price' using IQR method
@@ -129,3 +130,4 @@ C_RMSE = np.sqrt(mean_mse)
 print("Cross-validated RMSE:", C_RMSE)
 
 # print(housing_data['price'].describe())
+joblib.dump(best_model, "pkl files/chat_gpt_model.pkl")
