@@ -67,8 +67,8 @@ def score(model, data, labels):
     return np.sqrt(-scores)
 
 # Scores
-print("Training RMSE:", evaluate_model(model, test_prepared, test_label))
-cv_scores = score(model, train_prepared, train_label)
+print("Training RMSE:", evaluate_model(model, train_prepared, train_label))
+cv_scores = score(model, test_prepared,test_label )
 print("Cross-validated RMSE scores:", cv_scores)
 print("Mean CV RMSE:", cv_scores.mean())
 print("Standard deviation of CV RMSE:", cv_scores.std())
