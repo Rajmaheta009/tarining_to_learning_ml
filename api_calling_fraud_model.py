@@ -4,7 +4,7 @@ import joblib
 import pandas as pd
 
 app = FastAPI()
-model = joblib.load("pkl files/fraud.pkl")
+model ,full_pipline = joblib.load("pkl files/chat_gpt_model.pkl")
 
 
 class Transaction(BaseModel):
@@ -17,13 +17,15 @@ class Transaction(BaseModel):
     nameDest: str
     oldbalanceDest: float
     newbalanceDest: float
+    isFraud:float
 
 
 @app.post("/predict")
 def predict(txn: Transaction):
     df = pd.DataFrame([txn.dict()])
-
     # If you did one-hot encoding or other preprocessing, apply it here
+    df_processed = full_pipline.transform(df)
+    prediction = model.predict(df_processed)
+    return {"isFlaggedFraud": int(prediction)}
+    # return "hi that api working"
 
-    prediction = model.predict(df)
-    return {"isFlaggedFraud": int(prediction[0])}

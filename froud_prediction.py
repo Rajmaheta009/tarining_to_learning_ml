@@ -13,7 +13,7 @@ from sklearn.tree import DecisionTreeClassifier
 fraud_data = pd.read_csv("csv_database/Fraud.csv")
 
 def train_test_data(data):
-    train_data, test_data = train_test_split(data, test_size=0.2, random_state=42)
+    train_data, test_data = train_test_split(data, test_size=0.2, random_state=42,shuffle=True)
     return train_data, test_data
 
 train_data, test_data = train_test_data(fraud_data)
@@ -47,8 +47,8 @@ full_pipeline = ColumnTransformer([
 x_train_imputed = full_pipeline.fit_transform(x_train)
 x_test_imputed = full_pipeline.transform(x_test)
 
-model = DecisionTreeClassifier()
-# model = LogisticRegression()
+# model = DecisionTreeClassifier()
+model = LogisticRegression()
 
 model.fit(x_train_imputed, train_data_labels)
 
@@ -62,12 +62,15 @@ def score(model):
     scores = cross_val_score(model, x_test_imputed, test_data_labels,
                              scoring="neg_mean_squared_error", cv=3)
 
-    # Convert negative MSE to positive and sort
+        # Convert negative MSE to positive and sort
     score_result = np.sort(-scores)
     return score_result
 
+s_var = score(model)
+e_var= evaluate_model(model)
 
-print("Train Accuracy:", evaluate_model(model))
-print("Cross-validated Accuracy:", score(model))
 
-joblib.dump(model, "pkl files/fraud.pkl")
+print("Train Accuracy:",e_var)
+print("Cross-validated Accuracy:", s_var)
+
+joblib.dump((model,full_pipeline),"pkl files/fraud.pkl")

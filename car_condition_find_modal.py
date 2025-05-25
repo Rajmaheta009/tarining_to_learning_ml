@@ -10,7 +10,7 @@ from sklearn.preprocessing import StandardScaler, OneHotEncoder
 
 
 car_data = pd.read_csv("csv_database/car__sales__data.csv")
-car_data = pd.read_csv("car__sales__data.csv")
+# car_data = pd.read_csv("car__sales__data.csv")
 
 
 # print(car_data['Condition'].values)
