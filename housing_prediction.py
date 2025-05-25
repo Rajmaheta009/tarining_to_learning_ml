@@ -11,7 +11,11 @@ from sklearn.tree import DecisionTreeRegressor
 from sklearn.ensemble import RandomForestRegressor
 
 # Load data
+<<<<<<< HEAD
 housing = pd.read_csv("csv_database/Housing.csv")
+=======
+housing = pd.read_csv("Housing.csv")
+>>>>>>> 5984167ecfa68f4943eac877b5eb2e503b19fd5b
 
 # Split features and label
 train_data, test_data = train_test_split(housing, test_size=0.2, random_state=42)

@@ -10,6 +10,7 @@ from sklearn.preprocessing import StandardScaler, OneHotEncoder
 
 
 car_data = pd.read_csv("csv_database/car__sales__data.csv")
+car_data = pd.read_csv("car__sales__data.csv")
 
 
 # print(car_data['Condition'].values)
@@ -59,7 +60,6 @@ test_data_imputed = full_pipeline.transform(test_updated_data)
 
 model= LogisticRegression(max_iter=1000)
 # model = DecisionTreeClassifier()
-
 model.fit(train_data_imputed, train_data_labels)
 
 def evaluate_model(model):
