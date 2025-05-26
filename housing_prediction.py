@@ -1,3 +1,4 @@
+import joblib
 import numpy as np
 import pandas as pd
 from sklearn.compose import ColumnTransformer
@@ -11,11 +12,9 @@ from sklearn.tree import DecisionTreeRegressor
 from sklearn.ensemble import RandomForestRegressor
 
 # Load data
-<<<<<<< HEAD
 housing = pd.read_csv("csv_database/Housing.csv")
-=======
-housing = pd.read_csv("Housing.csv")
->>>>>>> 5984167ecfa68f4943eac877b5eb2e503b19fd5b
+housing = housing.drop("id", axis=1)
+# housing = pd.read_csv("Housing.csv")
 
 # Split features and label
 train_data, test_data = train_test_split(housing, test_size=0.2, random_state=42)
@@ -70,9 +69,18 @@ def score(model, data, labels):
     scores = cross_val_score(model, data, labels, scoring="neg_mean_squared_error", cv=10)
     return np.sqrt(-scores)
 
-# Scores
+
+# Evaluate on training data
 print("Training RMSE:", evaluate_model(model, train_prepared, train_label))
-cv_scores = score(model, test_prepared,test_label )
+
+# Evaluate using cross-validation on training data
+cv_scores = score(model, train_prepared, train_label)
 print("Cross-validated RMSE scores:", cv_scores)
 print("Mean CV RMSE:", cv_scores.mean())
 print("Standard deviation of CV RMSE:", cv_scores.std())
+
+# Evaluate on actual test set (no CV)
+print("Test RMSE:", evaluate_model(model, test_prepared, test_label))
+
+
+joblib.dump((model,full_pipeline),"pkl files/housing_price_prediction.pkl")

@@ -4,11 +4,12 @@ import joblib
 import pandas as pd
 
 app = FastAPI()
-model  = joblib.load("pkl files/house_price_prediction.pkl")
 
+# ✅ Unpack the model and preprocessing pipeline
+model, full_pipeline = joblib.load("pkl files/housing_price_prediction.pkl")
 
 class Transaction(BaseModel):
-    date: str
+    date: str  # This may not be used in prediction, consider dropping it if not trained
     bedrooms: int
     bathrooms: float
     sqft_living: int
@@ -28,12 +29,11 @@ class Transaction(BaseModel):
     sqft_living15: int
     sqft_lot15: int
 
-
 @app.post("/predict")
 def predict(txn: Transaction):
     df = pd.DataFrame([txn.dict()])
-    # If you did one-hot encoding or other preprocessing, apply it here
-    prediction = model.predict(df)
-    return {"predicted_price": round(float(prediction[0]), 2)}
-    # return "hi that api working"
+    # ✅ Apply the saved preprocessing pipeline before prediction
+    processed_df = full_pipeline.transform(df)
 
+    prediction = model.predict(processed_df)
+    return {"predicted_price": float(prediction[0])}
