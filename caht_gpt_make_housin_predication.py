@@ -130,4 +130,4 @@ C_RMSE = np.sqrt(mean_mse)
 print("Cross-validated RMSE:", C_RMSE)
 
 # print(housing_data['price'].describe())
-joblib.dump((best_model,full_pipeline),"pkl files/chat_gpt_model.pkl")
+joblib.dump((best_model),"pkl files/chat_gpt_model.pkl")

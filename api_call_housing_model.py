@@ -4,13 +4,11 @@ import joblib
 import pandas as pd
 
 app = FastAPI()
-model ,full_pipeline = joblib.load("pkl files/chat_gpt_model.pkl")
+model  = joblib.load("pkl files/chat_gpt_model.pkl")
 
 
 class Transaction(BaseModel):
-    id: int
     date: str
-    price: float
     bedrooms: int
     bathrooms: float
     sqft_living: int
@@ -35,8 +33,7 @@ class Transaction(BaseModel):
 def predict(txn: Transaction):
     df = pd.DataFrame([txn.dict()])
     # If you did one-hot encoding or other preprocessing, apply it here
-    df_processed = full_pipeline.transform(df)
-    prediction = model.predict(df_processed)
-    return {"price": prediction}
+    prediction = model.predict(df)
+    return {"predicted_price": round(float(prediction[0]), 2)}
     # return "hi that api working"
 
