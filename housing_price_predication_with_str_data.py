@@ -115,11 +115,8 @@ result = full_pipeline.predict(some_data)
 # print(list(some_label))
 
 def evaluate_model():
-<<<<<<< HEAD
     housing_prediction = model.predict(train_data)
-=======
     housing_prediction = full_pipeline.predict(train_data)
->>>>>>> 5984167ecfa68f4943eac877b5eb2e503b19fd5b
     mse = mean_squared_error(test_data_label, housing_prediction)
     rmse = np.sqrt(mse)
     return rmse

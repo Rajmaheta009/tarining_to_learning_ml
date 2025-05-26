@@ -47,8 +47,8 @@ full_pipeline = ColumnTransformer([
 x_train_imputed = full_pipeline.fit_transform(x_train)
 x_test_imputed = full_pipeline.transform(x_test)
 
-# model = DecisionTreeClassifier()
-model = LogisticRegression()
+model = DecisionTreeClassifier()
+# model = LogisticRegression()
 
 model.fit(x_train_imputed, train_data_labels)
 

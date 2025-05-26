@@ -4,7 +4,7 @@ import joblib
 import pandas as pd
 
 app = FastAPI()
-model  = joblib.load("pkl files/chat_gpt_model.pkl")
+model  = joblib.load("pkl files/house_price_prediction.pkl")
 
 
 class Transaction(BaseModel):
