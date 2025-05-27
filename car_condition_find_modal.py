@@ -1,13 +1,15 @@
+import joblib
 import numpy as np
 import pandas as pd
 from sklearn.compose import ColumnTransformer
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.impute import SimpleImputer
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split, cross_val_score
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
-
+from xgboost import XGBClassifier
 
 car_data = pd.read_csv("csv_database/car__sales__data.csv")
 # car_data = pd.read_csv("car__sales__data.csv")
@@ -58,8 +60,11 @@ full_pipeline = ColumnTransformer([
 train_data_imputed = full_pipeline.fit_transform(train_updated_data)
 test_data_imputed = full_pipeline.transform(test_updated_data)
 
-model= LogisticRegression(max_iter=1000)
+# model= LogisticRegression(max_iter=1000)
 # model = DecisionTreeClassifier()
+model = RandomForestClassifier(class_weight='balanced')
+# model = XGBClassifier()
+
 model.fit(train_data_imputed, train_data_labels)
 
 def evaluate_model(model):
@@ -79,3 +84,6 @@ e_var= evaluate_model(model)
 
 print("Train RMSE:", e_var)
 print("Cross-validated RMSE:", s_var)
+
+
+joblib.dump((model,full_pipeline),"pkl files/car_accident_prediction.pkl")

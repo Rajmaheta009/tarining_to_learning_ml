@@ -2,6 +2,7 @@ import joblib
 import numpy as np
 import pandas as pd
 from pandas.plotting import scatter_matrix
+from sklearn.linear_model import LinearRegression
 
 # Sklearn modules
 from sklearn.model_selection import train_test_split, cross_val_score
@@ -47,6 +48,7 @@ preprocessor = ColumnTransformer(transformers=[
 ])
 
 # Define model
+# model = LinearRegression()
 model = RandomForestRegressor()
 
 # Combine preprocessing and model

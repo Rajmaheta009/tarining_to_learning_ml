@@ -20,7 +20,7 @@ class Transaction(BaseModel):
     isFraud:float
 
 
-@app.post("/predict")
+@app.post("/predict_payment_fraud")
 def predict(txn: Transaction):
     df = pd.DataFrame([txn.dict()])
     # If you did one-hot encoding or other preprocessing, apply it here

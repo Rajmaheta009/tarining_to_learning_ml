@@ -1,6 +1,7 @@
 import joblib
 import numpy as np
 import pandas as pd
+from xgboost import XGBClassifier
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.impute import SimpleImputer
@@ -50,10 +51,12 @@ full_pipeline = ColumnTransformer([
 train_prepared = full_pipeline.fit_transform(train_data)
 test_prepared = full_pipeline.transform(test_data)
 
-# Choose model
-model = LinearRegression()
+# Choose a modal
+# model = LinearRegression()
 # model = DecisionTreeRegressor()
-# model = RandomForestRegressor()
+model = RandomForestRegressor()
+
+
 
 # Fit model
 model.fit(train_prepared, train_label)
@@ -79,7 +82,7 @@ print("Cross-validated RMSE scores:", cv_scores)
 print("Mean CV RMSE:", cv_scores.mean())
 print("Standard deviation of CV RMSE:", cv_scores.std())
 
-# Evaluate on actual test set (no CV)
+# Evaluate on an actual test set (no CV)
 print("Test RMSE:", evaluate_model(model, test_prepared, test_label))
 
 

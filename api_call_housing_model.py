@@ -29,7 +29,7 @@ class Transaction(BaseModel):
     sqft_living15: int
     sqft_lot15: int
 
-@app.post("/predict")
+@app.post("/predict_housing_price")
 def predict(txn: Transaction):
     df = pd.DataFrame([txn.dict()])
     # ✅ Apply the saved preprocessing pipeline before prediction

@@ -2,6 +2,7 @@ import joblib
 import numpy as np
 import pandas as pd
 from sklearn.compose import ColumnTransformer
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.impute import SimpleImputer
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, mean_squared_error
@@ -47,8 +48,9 @@ full_pipeline = ColumnTransformer([
 x_train_imputed = full_pipeline.fit_transform(x_train)
 x_test_imputed = full_pipeline.transform(x_test)
 
-model = DecisionTreeClassifier()
+# model = DecisionTreeClassifier()
 # model = LogisticRegression()
+model = RandomForestClassifier(class_weight='balanced')
 
 model.fit(x_train_imputed, train_data_labels)
 
