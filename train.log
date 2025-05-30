@@ -1,0 +1,25 @@
+2025-05-28 15:25:27,135 - INFO - Using device: cpu
+2025-05-28 15:25:27,144 - INFO - Detected 7 car classes
+2025-05-28 15:28:31,611 - INFO - Epoch 1: Train Loss=0.5106, Train Acc=84.10%
+2025-05-28 15:28:46,659 - INFO - Epoch 1: Val Loss=0.1113, Val Acc=96.92%
+2025-05-28 15:28:46,700 - INFO - Saved new best model with Val Acc=96.92%
+2025-05-28 15:31:37,668 - INFO - Epoch 2: Train Loss=0.0569, Train Acc=98.99%
+2025-05-28 15:31:49,652 - INFO - Epoch 2: Val Loss=0.1037, Val Acc=96.68%
+2025-05-28 15:34:30,334 - INFO - Epoch 3: Train Loss=0.0279, Train Acc=99.52%
+2025-05-28 15:34:42,350 - INFO - Epoch 3: Val Loss=0.0729, Val Acc=97.66%
+2025-05-28 15:34:42,389 - INFO - Saved new best model with Val Acc=97.66%
+2025-05-28 15:37:24,036 - INFO - Epoch 4: Train Loss=0.0116, Train Acc=99.94%
+2025-05-28 15:37:35,920 - INFO - Epoch 4: Val Loss=0.0795, Val Acc=97.29%
+2025-05-28 15:40:16,799 - INFO - Epoch 5: Train Loss=0.0079, Train Acc=99.94%
+2025-05-28 15:40:28,854 - INFO - Epoch 5: Val Loss=0.0588, Val Acc=97.42%
+2025-05-28 15:43:10,534 - INFO - Epoch 6: Train Loss=0.0110, Train Acc=99.79%
+2025-05-28 15:43:22,510 - INFO - Epoch 6: Val Loss=0.0932, Val Acc=96.92%
+2025-05-28 15:46:02,781 - INFO - Epoch 7: Train Loss=0.0426, Train Acc=98.99%
+2025-05-28 15:46:14,736 - INFO - Epoch 7: Val Loss=0.1089, Val Acc=96.68%
+2025-05-28 15:48:54,528 - INFO - Epoch 8: Train Loss=0.0267, Train Acc=99.46%
+2025-05-28 15:49:06,267 - INFO - Epoch 8: Val Loss=0.1028, Val Acc=96.92%
+2025-05-28 15:51:45,840 - INFO - Epoch 9: Train Loss=0.0146, Train Acc=99.67%
+2025-05-28 15:51:57,693 - INFO - Epoch 9: Val Loss=0.0990, Val Acc=97.17%
+2025-05-28 15:54:43,530 - INFO - Epoch 10: Train Loss=0.0224, Train Acc=99.55%
+2025-05-28 15:54:55,429 - INFO - Epoch 10: Val Loss=0.0760, Val Acc=97.17%
+2025-05-28 15:54:55,429 - INFO - Training complete.
