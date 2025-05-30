@@ -45,9 +45,14 @@ class CarImageInput(BaseModel):
 # Define the tool
 @mcp.tool()
 def car_model_connecter(input: CarImageInput) -> str:
-    try:
+        # Handle padding issue for base64 string
+        file_data = input.file_data
+        padding_needed = len(file_data) % 4
+        if padding_needed:
+            file_data += '=' * (4 - padding_needed)
+
         # Decode and preprocess image
-        image_bytes = base64.b64decode(input.file_data)
+        image_bytes = base64.b64decode(file_data)
         image = Image.open(io.BytesIO(image_bytes)).convert("RGB")
         image_tensor = transform(image).unsqueeze(0)
 
@@ -60,9 +65,6 @@ def car_model_connecter(input: CarImageInput) -> str:
 
         print(f"Predicted car brand: {class_name}")
         return f"Predicted car brand: {class_name}"
-
-    except Exception as e:
-        return f"Error: {str(e)}"
 
 # Run the MCP server
 if __name__ == "__main__":

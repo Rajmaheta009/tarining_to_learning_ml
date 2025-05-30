@@ -23,11 +23,12 @@ console.setLevel(logging.INFO)
 logging.getLogger('').addHandler(console)
 
 # ========== Device Setup ==========
-device = torch.device("gpu")
+device = torch.device("cpu")
+logging.info("Using CPU for training.")
 logging.info(f"Using device: {device}")
 
 # ========== Data Setup ==========
-data_dir = "./csv_database/Cars Dataset"  # Replace with your dataset path
+data_dir = "./csv_database/Cars Dataset"  #Replace with your dataset path
 train_dir = os.path.join(data_dir, "train")
 val_dir = os.path.join(data_dir, "test")
 
