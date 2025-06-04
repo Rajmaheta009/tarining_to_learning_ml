@@ -6,7 +6,7 @@ import pandas as pd
 app = FastAPI()
 
 # ✅ Unpack the model and preprocessing pipeline
-model, full_pipeline = joblib.load("pkl files/housing_price_prediction.pkl")
+model, full_pipeline = joblib.load("../pkl_files/housing_price_prediction.pkl")
 
 class Transaction(BaseModel):
     date: str  # This may not be used in prediction, consider dropping it if not trained

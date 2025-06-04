@@ -86,4 +86,4 @@ print("Standard deviation of CV RMSE:", cv_scores.std())
 print("Test RMSE:", evaluate_model(model, test_prepared, test_label))
 
 
-joblib.dump((model,full_pipeline),"pkl files/housing_price_prediction.pkl")
+joblib.dump((model,full_pipeline), "pkl_files/housing_price_prediction.pkl")

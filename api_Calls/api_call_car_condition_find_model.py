@@ -6,7 +6,7 @@ import pandas as pd
 app = FastAPI()
 
 # ✅ Unpack the model and preprocessing pipeline
-model, full_pipeline = joblib.load("pkl files/car_accident_prediction.pkl")
+model, full_pipeline = joblib.load("../pkl_files/car_accident_prediction.pkl")
 
 class Transaction(BaseModel):
     car_make: str  # Manufacturer of the car (e.g., Toyota, Ford)

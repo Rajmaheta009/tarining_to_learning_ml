@@ -113,6 +113,6 @@ for epoch in range(num_epochs):
 
 logging.info("Training complete.")
 
-print("💾 Saving model to 'pkl files/fraud.pkl'...")
-torch.save(model.state_dict(), "pkl files/car_image_model.pth")
+print("💾 Saving model to 'pkl_files/fraud.pkl'...")
+torch.save(model.state_dict(), "pkl_files/car_image_model.pth")
 print("✅ Model saved successfully.")

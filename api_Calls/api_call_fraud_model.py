@@ -4,7 +4,7 @@ import joblib
 import pandas as pd
 
 app = FastAPI()
-model ,full_pipline = joblib.load("pkl files/fraud.pkl")
+model ,full_pipline = joblib.load("../pkl_files/fraud.pkl")
 
 
 class Transaction(BaseModel):

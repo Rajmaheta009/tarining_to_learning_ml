@@ -13,7 +13,7 @@ num_classes = 7  # set to your actual number of car classes
 device = torch.device("cpu")
 model = resnet18(pretrained=False)
 model.fc = torch.nn.Linear(model.fc.in_features, num_classes)
-model.load_state_dict(torch.load("pkl files/car_image_model.pth", map_location=device))
+model.load_state_dict(torch.load("../pkl_files/car_image_model.pth", map_location=device))
 model.eval()
 
 # Transform for inference

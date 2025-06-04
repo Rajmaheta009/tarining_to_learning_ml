@@ -85,4 +85,4 @@ print("Standard Deviation:", cv_scores.std())
 print("Test RMSE:", evaluate_model())
 print("Cross-Validated RMSE:", np.sqrt(cv_scores.mean()))
 
-joblib.dump((model,full_pipeline),"pkl files/housing_price_prediction_with_str_data.pkl")
+joblib.dump((model,full_pipeline), "pkl_files/housing_price_prediction_with_str_data.pkl")

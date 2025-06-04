@@ -105,6 +105,6 @@ print("✔️ RMSE (Train):", e_var)
 print("✔️ Cross-Validation MSE:", s_var)
 
 # Save model
-print("💾 Saving model to 'pkl files/fraud.pkl'...")
-joblib.dump((model, full_pipeline), "pkl files/fraud.pkl")
+print("💾 Saving model to 'pkl_files/fraud.pkl'...")
+joblib.dump((model, full_pipeline), "pkl_files/fraud.pkl")
 print("✅ Model saved successfully.")

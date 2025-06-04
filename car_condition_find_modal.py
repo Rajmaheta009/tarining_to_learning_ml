@@ -86,4 +86,4 @@ print("Train RMSE:", e_var)
 print("Cross-validated RMSE:", s_var)
 
 
-joblib.dump((model,full_pipeline),"pkl files/car_accident_prediction.pkl")
+joblib.dump((model,full_pipeline), "pkl_files/car_accident_prediction.pkl")
