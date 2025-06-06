@@ -2,58 +2,106 @@ import threading
 import speech_recognition as sr
 import pyttsx3
 import requests
+import time
 from datetime import datetime
+import difflib
 
 OLLAMA_MODEL = "llama3.2"
 OLLAMA_URL = "http://localhost:11434/api/generate"
 
 r = sr.Recognizer()
-stop_speaking_flag = threading.Event()
-
 engine = pyttsx3.init()
-rate = engine.getProperty('rate')
-engine.setProperty('rate', rate + 50)  # Increase speaking speed
+engine.setProperty('rate', 170)
+engine.setProperty('volume', 1.0)
 
 STOP_WORDS = ("stop", "wait", "sorry", "what you said")
 
-def speak(text):
-    words = text.split()
-    for word in words:
-        if stop_speaking_flag.is_set():
-            print("Speech interrupted!")
-            engine.stop()
-            break
-        engine.say(word)
-        engine.runAndWait()
-    engine.stop()
+# Event to signal TTS speaking should stop
+stop_speaking_flag = threading.Event()
+
+# Flag to skip next input after interrupt
+skip_next_input = False
+
+
+def is_interrupt_command(text):
+    text = text.lower().strip()
+    for word in STOP_WORDS:
+        ratio = difflib.SequenceMatcher(None, text, word).ratio()
+        if ratio > 0.8:
+            return True
+    return False
+
 
 def listen_for_interrupt():
+    """Listen for interrupt commands only while speaking."""
+    print("Interrupt listener started.")
     with sr.Microphone() as source:
-        r.adjust_for_ambient_noise(source, duration=0.2)
-        print("Listening for 'stop' interrupt...")
+        r.adjust_for_ambient_noise(source, duration=0.3)
         while not stop_speaking_flag.is_set():
             try:
                 audio = r.listen(source, timeout=2, phrase_time_limit=2)
-                interrupt_text = r.recognize_google(audio).lower()
-                print("Interrupt heard:", interrupt_text)
-                if any(word in interrupt_text for word in STOP_WORDS):
+                interrupt_text = r.recognize_google(audio).lower().strip()
+                print(f"Interrupt heard: '{interrupt_text}'")
+                if is_interrupt_command(interrupt_text):
+                    print("Interrupt command detected! Stopping speech.")
                     stop_speaking_flag.set()
-            except Exception:
-                # Timeout or unintelligible speech, continue listening
-                pass
+                    # Stop pyttsx3 speaking immediately
+                    engine.stop()
+                    break
+            except sr.WaitTimeoutError:
+                # No speech detected within timeout
+                continue
+            except sr.UnknownValueError:
+                # Speech not recognized
+                continue
+            except Exception as e:
+                print(f"Interrupt listener error: {e}")
+                continue
+    print("Interrupt listener stopped.")
+
+
+def speak(text):
+    """Speak text but allow interrupt."""
+    if stop_speaking_flag.is_set():
+        return
+
+    stop_speaking_flag.clear()
+
+    # Start interrupt listener thread
+    interrupt_thread = threading.Thread(target=listen_for_interrupt)
+    interrupt_thread.daemon = True
+    interrupt_thread.start()
+
+    # Speak text (blocking call)
+    engine.say(text)
+    engine.runAndWait()
+
+    # Once speaking is done, signal listener to stop
+    stop_speaking_flag.set()
+    interrupt_thread.join()
+
 
 def record_text():
+    """Capture user voice input."""
     with sr.Microphone() as source:
-        r.adjust_for_ambient_noise(source, duration=0.2)
+        r.adjust_for_ambient_noise(source, duration=0.3)
         print("Listening for your input...")
+
         try:
-            audio = r.listen(source, timeout=5)
+            audio = r.listen(source, timeout=5, phrase_time_limit=5)
             text = r.recognize_google(audio).lower().strip()
-            print("You said:", text)
+            print(f"You said: '{text}'")
             return text
-        except Exception as e:
-            print("No input or error:", e)
+        except sr.WaitTimeoutError:
+            print("Listening timed out.")
             return ""
+        except sr.UnknownValueError:
+            print("Sorry, I did not understand.")
+            return ""
+        except Exception as e:
+            print(f"Error during recognition: {e}")
+            return ""
+
 
 def query_ollama(prompt, model=OLLAMA_MODEL):
     payload = {"model": model, "prompt": prompt, "stream": False}
@@ -68,36 +116,55 @@ def query_ollama(prompt, model=OLLAMA_MODEL):
         print(f"Request failed: {e}")
         return "Sorry, I had trouble communicating with the model."
 
+
 def save_to_file(text):
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     with open("output.txt", "a") as f:
         f.write(f"[{timestamp}] {text}\n")
 
-# === Main loop ===
-while True:
-    user_input = record_text()
-    if not user_input:
-        continue
 
-    if user_input in STOP_WORDS:
-        speak("Stopping the program.")
-        break
+def main():
+    global skip_next_input
 
-    save_to_file(f"You: {user_input}")
+    while True:
+        if skip_next_input:
+            print("Skipping next input due to interrupt.")
+            skip_next_input = False
+            # Flush microphone input buffer
+            with sr.Microphone() as source:
+                r.adjust_for_ambient_noise(source, duration=0.3)
+                try:
+                    _ = r.listen(source, timeout=1, phrase_time_limit=1)
+                except:
+                    pass
+            time.sleep(0.5)
+            continue
 
-    model_response = query_ollama(user_input)
-    print("Model:", model_response)
-    save_to_file(f"Model: {model_response}")
+        user_input = record_text()
+        if not user_input:
+            continue
 
-    stop_speaking_flag.clear()
+        if is_interrupt_command(user_input):
+            speak("Stopping the program.")
+            break
 
-    # Start listening for interrupt while speaking
-    interrupt_thread = threading.Thread(target=listen_for_interrupt)
-    interrupt_thread.start()
+        save_to_file(f"You: {user_input}")
 
-    speak(model_response)
+        model_response = query_ollama(user_input)
+        print(f"Model: {model_response}")
+        save_to_file(f"Model: {model_response}")
 
-    interrupt_thread.join()
+        stop_speaking_flag.clear()
+        speak(model_response)
 
-    if stop_speaking_flag.is_set():
-        speak("I heard you say stop. Please repeat.")
+        if stop_speaking_flag.is_set():
+            speak("I heard you say stop. Please repeat.")
+            skip_next_input = True
+            continue
+
+        # Small pause before next listening
+        time.sleep(0.5)
+
+
+if __name__ == "__main__":
+    main()
